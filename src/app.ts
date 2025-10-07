@@ -1,6 +1,8 @@
 import compression from "compression";
 import cors from "cors";
 import express, { Application } from "express";
+import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
+import { router } from "./app/routes";
 
 const app: Application = express();
 
@@ -16,6 +18,8 @@ app.use(
   })
 );
 
+app.use("/api/v1", router);
+
 // Default route for testing
 app.get("/", (_req, res) => {
   res.send("API is running");
@@ -28,5 +32,8 @@ app.use((_req, res, _next) => {
     message: "Route Not Found",
   });
 });
+
+// Global Error Handler
+app.use(globalErrorHandler);
 
 export default app;

@@ -1,5 +1,4 @@
-
-# Next Blog 
+# Next Blog
 
 A simple **Blog Application Management** built with **TypeScript, Express.js**.  
 This project is designed for the practice "Prisma" hands-on by building a blog platform.
@@ -7,6 +6,7 @@ This project is designed for the practice "Prisma" hands-on by building a blog p
 ---
 
 ## Features
+
 - TypeScript + Express.js setup
 - Modular project structure
 - Environment configuration with `dotenv`
@@ -63,14 +63,17 @@ pnpm dev
 Prisma-Blog/
 │── node_modules/          # Dependencies
 │── src/
+│   ├──app/
+│   │   ├──routes/
+│   │   │     └──index.ts  # module routes
+│   │   ├── config/        # Environment & configuration files
+│   │   └── modules/       # Application modules (posts, users, etc.)
 │   ├── app.ts             # Express app configuration
-│   ├── server.ts          # Server entry point
-│   ├── config/            # Environment & configuration files
-│   └── modules/           # Application modules (posts, users, etc.)
+│   └── server.ts          # Server entry point
 │── package.json           # Project metadata & scripts
 │── pnpm-lock.yaml         # Lockfile (pnpm)
 │── tsconfig.json          # TypeScript configuration
-│── README.md              # Documentation
+└── README.md              # Documentation
 ```
 
 ---
@@ -92,7 +95,7 @@ pnpm start
 
 ## Learning Objective
 
-* Connect a Node.js app with Prisma ORM
-* Build modular APIs
-* Manage environment variables
-* Structure scalable backend projects
+- Connect a Node.js app with Prisma ORM
+- Build modular APIs
+- Manage environment variables
+- Structure scalable backend projects

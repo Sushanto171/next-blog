@@ -1,7 +1,8 @@
 import http, { Server } from "http";
 import app from "./app";
-import { prisma } from "./config/db";
-import envVars from "./config/env.config";
+import { prisma } from "./app/config/db";
+import envVars from "./app/config/env.config";
+
 
 let server: Server | null = null;
 
