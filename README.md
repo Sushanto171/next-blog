@@ -19,7 +19,7 @@ This project is designed for the practice "Prisma" hands-on by building a blog p
 Clone the repository:
 
 ```bash
-git clone https://github.com//next-blog-starter.git
+git https://github.com/Sushanto171/next-blog.git
 cd next-blog
 ```
 
