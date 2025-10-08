@@ -29,7 +29,18 @@ const getPostsByUserId = catchAsync(async (req, res) => {
 
   sendResponse(res, {
     success: true,
-    statusCode: 201,
+    statusCode: 200,
+    message: "Posts retrieved successfully!",
+    data: result,
+  });
+});
+
+const getPostsById = catchAsync(async (req, res) => {
+  const result = await postService.getPostsById(Number(req.params.id));
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
     message: "Posts retrieved successfully!",
     data: result,
   });
@@ -63,4 +74,5 @@ export const postController = {
   getPostsByUserId,
   updatePost,
   deletePost,
+  getPostsById,
 };

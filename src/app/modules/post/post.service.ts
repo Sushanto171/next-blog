@@ -50,6 +50,26 @@ const getPostsByUserId = async (userId: number) => {
       },
     },
   });
+  return result;
+};
+
+const getPostsById = async (id: number) => {
+  const result = await prisma.post.findUniqueOrThrow({
+    where: {
+      post_id: id,
+    },
+    include: {
+      author: {
+        select: {
+          name: true,
+          email: true,
+          phone: true,
+          role: true,
+        },
+      },
+    },
+  });
+  return result;
 };
 
 const updatePost = async (id: number, payload: Prisma.PostUpdateInput) => {
@@ -73,4 +93,5 @@ export const postService = {
   getPostsByUserId,
   updatePost,
   deletePost,
+  getPostsById,
 };

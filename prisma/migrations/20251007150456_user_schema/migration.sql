@@ -28,3 +28,6 @@ ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL;
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+
+DELETE FROM "user"
