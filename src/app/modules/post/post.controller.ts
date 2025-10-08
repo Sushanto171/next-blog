@@ -14,13 +14,31 @@ const createPost = catchAsync(async (req, res) => {
 });
 
 const getAllPosts = catchAsync(async (req, res) => {
-  const result = await postService.getAllPosts();
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 10;
+  const search = (req.query.search as string) || "";
+  const tags = (req.query.tags as string) || undefined;
+  const isFeatured = req.query.isFeatured
+    ? req.query.isFeatured === "true"
+    : undefined;
+  const sortby = (req.query.sortby as string) || "createdAt";
+  const orderby = (req.query.orderby as string) || "desc";
+
+  const result = await postService.getAllPosts({
+    page,
+    limit,
+    search,
+    tags,
+    isFeatured,
+    sortby,
+    orderby,
+  });
 
   sendResponse(res, {
     success: true,
     statusCode: 200,
     message: "Posts retrieved successfully!",
-    data: result,
+    ...result,
   });
 });
 

@@ -18,8 +18,57 @@ const createPost = async (payload: Prisma.PostCreateInput) => {
   return result;
 };
 
-const getAllPosts = async () => {
+const getAllPosts = async ({
+  page,
+  limit,
+  search,
+  tags,
+  isFeatured,
+  sortby,
+  orderby,
+}: {
+  page: number;
+  limit: number;
+  search?: string;
+  tags?: string;
+  isFeatured?: boolean;
+  sortby: string;
+  orderby: string;
+}) => {
+  const where: any = {
+    AND: [
+      search && {
+        OR: [
+          {
+            title: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+          {
+            content: {
+              contains: search,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      tags && {
+        tags: {
+          hasEvery: tags.split(","),
+        },
+      },
+      ...[typeof isFeatured === "boolean" && { isFeatured }],
+    ].filter(Boolean),
+  };
+
   const result = await prisma.post.findMany({
+    where,
+    skip: limit * (page - 1),
+    take: limit,
+    orderBy: {
+      [sortby]: orderby,
+    },
     include: {
       author: {
         select: {
@@ -31,7 +80,17 @@ const getAllPosts = async () => {
       },
     },
   });
-  return result;
+
+  const total = await prisma.post.count({ where });
+  return {
+    data: result,
+    meta: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
 };
 
 const getPostsByUserId = async (userId: number) => {
