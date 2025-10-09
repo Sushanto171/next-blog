@@ -113,22 +113,32 @@ const getPostsByUserId = async (userId: number) => {
 };
 
 const getPostsById = async (id: number) => {
-  const result = await prisma.post.findUniqueOrThrow({
-    where: {
-      post_id: id,
-    },
-    include: {
-      author: {
-        select: {
-          name: true,
-          email: true,
-          phone: true,
-          role: true,
+  return prisma.$transaction(async (tx) => {
+   const res = await tx.post.update({
+      where: {
+        post_id: id,
+      },
+      data: {
+        views: { increment: 1 },
+      },
+    });
+
+    return await tx.post.findUniqueOrThrow({
+      where: {
+        post_id: id,
+      },
+      include: {
+        author: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+            role: true,
+          },
         },
       },
-    },
+    });
   });
-  return result;
 };
 
 const updatePost = async (id: number, payload: Prisma.PostUpdateInput) => {
