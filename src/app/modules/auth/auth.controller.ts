@@ -12,6 +12,17 @@ const loginWithEmailPassword = catchAsync(async (req, res) => {
   });
 });
 
+const authWithGoogle = catchAsync(async (req, res) => {
+  const result = await AuthService.authWithGoogle(req.body);
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "You are login successfully",
+    data: result,
+  });
+});
+
 export const AuthController = {
   loginWithEmailPassword,
+  authWithGoogle,
 };
