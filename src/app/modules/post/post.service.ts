@@ -114,7 +114,7 @@ const getPostsByUserId = async (userId: number) => {
 
 const getPostsById = async (id: number) => {
   return prisma.$transaction(async (tx) => {
-   const res = await tx.post.update({
+    const res = await tx.post.update({
       where: {
         post_id: id,
       },
@@ -156,6 +156,35 @@ const deletePost = async (id: number) => {
   return result;
 };
 
+const stats = async () => {
+  return await prisma.$transaction(async (tx) => {
+    const aggregates = await tx.post.aggregate({
+      _count: true,
+      _max: { views: true },
+      _min: { views: true },
+      _sum: { views: true },
+      _avg: { views: true },
+    });
+
+    const isFeatured = await tx.post.count({ where: { isFeatured: true } });
+
+    const topPost = await tx.post.findFirst({
+      where: { isFeatured: true },
+      orderBy: { views: "desc" },
+    });
+
+    return {
+      totalPosts: aggregates._count,
+      maxViews: aggregates._max.views,
+      minViews: aggregates._min.views,
+      totalViews: aggregates._sum.views,
+      avgViews: aggregates._avg.views,
+      featuredPosts: isFeatured,
+      topPost,
+    };
+  });
+};
+
 export const postService = {
   createPost,
   getAllPosts,
@@ -163,4 +192,5 @@ export const postService = {
   updatePost,
   deletePost,
   getPostsById,
+  stats,
 };
