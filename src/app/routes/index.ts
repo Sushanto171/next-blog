@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { authRouter } from "../modules/auth/auth.routes";
 import { postRoute } from "../modules/post/post.routes";
 import { userRoute } from "../modules/user/user.routes";
 
@@ -17,6 +18,10 @@ const moduleRoutes: IRoute[] = [
   {
     router: postRoute,
     path: "/posts",
+  },
+  {
+    router: authRouter,
+    path: "/auth",
   },
 ];
 

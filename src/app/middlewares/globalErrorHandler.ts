@@ -7,5 +7,5 @@ export const globalErrorHandler = (
   _next: NextFunction
 ) => {
   console.log("Global Error", error);
-  res.status(500).json("Something want wrong");
+  res.status(500).json(error.message || "Something want wrong");
 };
